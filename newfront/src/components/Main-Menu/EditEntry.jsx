@@ -4,13 +4,13 @@ import axios from "axios";
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import TextField from '@mui/material/FilledInput';
 import myfunctions from '../functions/myfunctions' 
+import Upload from "./Upload";
 
 
 
 function EditEntry(props) {
 
   const [editText, setEditText] = React.useState('')
-
 
   let cardId = myfunctions.getCardId()
 
@@ -54,7 +54,8 @@ function EditEntry(props) {
     <Button variant="contained" onClick={()=>{
       props.onSend(editText);props.onSwitch()
     }}> Modifier</Button>
-    <Button variant="contained" color='warning' onClick={props.onImageDelete}>Supprimer l'image</Button></div>
+    <Button variant="contained" color='warning' onClick={()=>{props.onImageDelete()}}>Supprimer l'image</Button></div>
+    <Upload onAdd={props.onUpload} class={"editing-upload"} />
     
     </div>
   );

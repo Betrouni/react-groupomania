@@ -3,7 +3,6 @@ import MainEntry from "./MainEntry";
 import "./styles.css";
 import RecipeReviewCard from "./Card";
 import axios from "axios";
-import Upload from "./Upload";
 import EditEntry from "./EditEntry";
 import LogoutIcon from "@mui/icons-material/Logout";
 import myfunctions from '../functions/myfunctions' 
@@ -13,6 +12,7 @@ function Menu(props) {
   const [imgState, setImgState] = React.useState();
   const [postList, setPostList] = React.useState([]);
   const [isEditing, setIsEditing] = React.useState(false);
+  const [isImageEdited, setIsImageEdited] = React.useState(false)
 
 
 
@@ -24,54 +24,6 @@ function Menu(props) {
     }
   }
 
-
-  // function sendToAPI(dataPackage) {
-  //   let token = myfunctions.getToken();
-  //   axios
-  //   .post("http://localhost:8000/saveReactPost", dataPackage,{
-  //     headers:{
-  //       authorization: token
-  //     }
-  //   })
-  //   .then((res) => console.log(res));
-  // }
-
-  // function sendToEditAPI(dataPackage) {
-  //   let cardId = myfunctions.getCardId();
-  //   let token = myfunctions.getToken();
-
-  //   axios
-  //     .put(`http://localhost:8000/api/post/${cardId}`, dataPackage,{
-  //       headers:{
-  //         authorization: token
-  //       }
-  //     })
-  //     .then((res) => console.log(res));
-  // }
-
-  // function sendToLikeAPI(dataPackage) {
-  //   let cardId = myfunctions.getCardId()
-  //   let token = myfunctions.getToken()
-
-  //   axios
-  //     .post(`http://localhost:8000/api/post/${cardId}/like`, dataPackage,{
-  //       headers:{
-  //         authorization: token
-  //       }
-  //     })
-  //     .then((res) => console.log(res));
-  // }
-
-  function sendToDeleteAPI(input) {
-    let token = myfunctions.getToken()
-    axios
-      .delete(`http://localhost:8000/api/post/${input}`,{
-        headers:{
-          authorization: token
-        }
-      })
-      .then((res) => console.log(res));
-  }
 
 
 
@@ -91,7 +43,10 @@ function Menu(props) {
     let userId = myfunctions.getUserId();
     const formData = new FormData();
     formData.append("text", a);
-    formData.append("myFile", imgState);
+    if (isImageEdited === true ){  formData.append("signal", "suppression")}
+
+    formData.append("myFile", imgState)
+ 
     formData.append("userId", userId);
     myfunctions.sendToEditAPI(formData);
   }
@@ -140,17 +95,18 @@ function Menu(props) {
       {isEditing === true ? (
         <div>
           <EditEntry
+          onUpload={setImgState}
             onSwitch={() => {
               switchtoEdit();
             }}
             onSend={clickTheEditButton}
-            onImageDelete={()=>{setImgState('')}}
+            onImageDelete={()=>{setImgState('');setIsImageEdited(true)}}
           />
-          <Upload onAdd={setImgState} class={"editing-upload"} />
+          {/* <Upload onAdd={setImgState} class={"editing-upload"} /> */}
         </div>
       ) : (
         <div className="menu-container">
-          <div className="left-menu"></div>
+          {/* <div className="left-menu"></div> */}
           <div className="main-menu">
             <div className="main-menu-top">
               {postList.map((i) => {
@@ -185,23 +141,20 @@ function Menu(props) {
               })}
             </div>
             <div className="main-menu-bot">
-              <Upload onAdd={setImgState} class={"ImageUploader"} />
-              <MainEntry onAdd={setMsgState} BtnClick={()=>{window.location.reload(false);clickTheButton()}} />
+             
+              <MainEntry onUpload={setImgState} onAdd={setMsgState} BtnClick={()=>{window.location.reload(false);clickTheButton()}} />
             </div>
           </div>
 
           <div className="right-menu">
+          <img className='logo-group' src="https://res.cloudinary.com/essenceo/image/upload/v1662655826/icon-left-font-monochrome-white_ock2z2.png" alt="Logo" />;
             <LogoutIcon onClick={props.onLogout} className="logout-icon" />
           </div>
         </div>
       )}
     </div>
 
-    // <div className='editing-vue' >
-    //    <EditEntry />
-    //    <Upload onAdd={setImgState} class={"editing-upload"} />
-
-    // </div>
+  
   );
 }
 

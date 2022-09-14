@@ -57,16 +57,19 @@ export default function RecipeReviewCard(props) {
           </Avatar>
         }
         action={ 
+          <div>
           <IconButton aria-label="settings" onClick={props.onSwitch} >
             <EditIcon />
           </IconButton>
+          <IconButton  onClick={props.onBean}>
+            <DeleteIcon  />
+          </IconButton>
+          </div>
         }
         title={props.email}
         // subheader="September 14, 2016"
       /> 
-       <IconButton  onClick={props.onBean}>
-            <DeleteIcon  />
-          </IconButton>
+       
       </div>
       : <CardHeader
         avatar={
