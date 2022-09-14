@@ -91,7 +91,7 @@ function Menu(props) {
   }, []);
 
   return (
-    <div>
+    <div className="full-menu">
       {isEditing === true ? (
         <div>
           <EditEntry
@@ -107,7 +107,12 @@ function Menu(props) {
       ) : (
         <div className="menu-container">
           {/* <div className="left-menu"></div> */}
+           <div className="top-menu">
+          <img className='logo-group' src="https://res.cloudinary.com/essenceo/image/upload/v1662655826/icon-left-font-monochrome-white_ock2z2.png" alt="Logo" />
+            <LogoutIcon onClick={props.onLogout} className="logout-icon" />
+          </div>
           <div className="main-menu">
+         
             <div className="main-menu-top">
               {postList.map((i) => {
                 return (
@@ -140,16 +145,13 @@ function Menu(props) {
                 );
               })}
             </div>
+            
             <div className="main-menu-bot">
              
               <MainEntry onUpload={setImgState} onAdd={setMsgState} BtnClick={()=>{window.location.reload(false);clickTheButton()}} />
             </div>
           </div>
 
-          <div className="right-menu">
-          <img className='logo-group' src="https://res.cloudinary.com/essenceo/image/upload/v1662655826/icon-left-font-monochrome-white_ock2z2.png" alt="Logo" />;
-            <LogoutIcon onClick={props.onLogout} className="logout-icon" />
-          </div>
         </div>
       )}
     </div>
