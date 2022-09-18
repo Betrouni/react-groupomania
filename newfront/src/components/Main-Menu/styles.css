@@ -83,12 +83,16 @@
 }
 
 .postCard{
-    
+    font-family: 'Lato';
     margin: auto;
     margin-bottom: 25px;
 
 
     ;
+}
+
+.postContent {
+    color:red
 }
 
 .MuiCardMedia-img{

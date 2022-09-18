@@ -10,7 +10,7 @@ const SignUp = (props) => {
       <form>
         <h1 className="header-signin">Inscription</h1>
        
-        <span>utilisez votre email comme identifiant</span>
+        <span>Utilisez votre email comme identifiant</span>
         <input onChange={props.handleChange}  name='email' type="email" placeholder="Email" />
         <input onChange={props.handleChange}  name='password' type="password" placeholder="Mot de Passe" />
         <button onClick={props.sendData}> <DoubleArrowRoundedIcon className="arrow"/> </button>

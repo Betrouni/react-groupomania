@@ -92,7 +92,6 @@ app.post("/api/auth/signup", (req, res) => {
 
 app.post("/api/auth/login", (req, res) => {
   const { email, password } = req.body;
-  // console.log(req.body);
 
   User.findOne({ email: email }, (err, data) => {
     if (err) {
@@ -103,7 +102,6 @@ app.post("/api/auth/login", (req, res) => {
         bcrypt.compare(password, data.password, (err, result) => {
           if (result === true) {
             const accessToken = token.generateAccessToken(data);
-            // console.log(accessToken);
             console.log(data.email);
             res.send({
               message: "user connected",
@@ -122,47 +120,8 @@ app.post("/api/auth/login", (req, res) => {
   });
 });
 
-// app.post("/api/post", upload.single("image"), (req, res) => {
-//   console.log(req.body);
-// const JsonData = JSON.parse(req.body.post);
-// const newPost = new Post(JsonData);
-// newPost.likes = 0;
-// newPost.dislikes = 0;
-// newPost.imageUrl = req.file.path;
-// newPost.imageUrl = newPost.imageUrl.replace("..\\front\\src\\", "");
-// console.log("image: " + newPost.imageUrl);
-// newPost.save().then(console.log("Le post a bien été enregistée"));
-// res.send({ message: "tout est ban" });
-// });
-
 app.post("/savePost", (req, res) => {
   console.log(req.files);
-  // const fileName = randomString.makeId(25)
-
-  // const path = __dirname + '/images/' + fileName
-
-  // req.files.myFile.mv(path, (error) => {
-  //   if (error) {
-  //     console.error(error)
-  //     res.writeHead(500, {
-  //       'Content-Type': 'application/json'
-  //     })
-  //     res.end(JSON.stringify({ status: 'error', message: error }))
-  //     return
-  //   }
-  //   cloudinary.uploader.upload(path,{public_id:fileName}, function(err, result){
-  //     createPost('ok test', '06060606', result.url)
-  //     console.log(result.url)
-
-  //   });
-  //   console.log(fileName)
-
-  //   res.writeHead(200, {
-  //     'Content-Type': 'application/json'
-  //   })
-  //   res.end(JSON.stringify({ status: 'success', path: fileName }))
-  // })
-  // console.log(fileName)
 });
 
 app.post("/saveReactPost", token.authenticateToken, (req, res) => {
@@ -214,22 +173,19 @@ app.get("/api/post/:id", token.authenticateToken, function (req, res) {
 });
 
 app.get("/api/post", token.authenticateToken, (req, res) => {
-  // console.log(req.user);
   Post.find({}, (err, docs) => {
     let postList = [];
     for (let i = 0; i < docs.length; i++) {
       postList.push(docs[i]);
     }
-    // console.log(sauceList);
-    // console.log(docs);
+
     res.status(200).json(docs);
   });
 });
-// v1660318195
+
 app.put("/api/post/:id", token.authenticateToken, (req, res) => {
   console.log("test ici");
-  // let sauceData = JSON.parse(req.body.sauce)
-  // console.log(sauceData.name);
+
   console.log(req.files);
 
   let JsonData;
@@ -238,17 +194,28 @@ app.put("/api/post/:id", token.authenticateToken, (req, res) => {
     console.log("post envoyé sans image");
     // console.log(req.body)
     let JsonData = req.body;
-    Post.updateOne(
-      { _id: req.params.id },
-      { ...JsonData, imageURL: "" },
-      (err) => {
-        if (!err) {
-          res.send({ message: "tout est ban" });
-        } else {
-          console.log(err);
-        }
+    Post.updateOne({ _id: req.params.id }, { ...JsonData }, (err) => {
+      if (!err) {
+        res.send({ message: "tout est ban" });
+      } else {
+        console.log(err);
       }
-    );
+    });
+    if (req.body.signal === "suppression") {
+      console.log("l'image doit être supprimée");
+      // console.log(req.body)
+      let JsonData = req.body;
+      Post.updateOne(
+        { _id: req.params.id },
+        { ...JsonData, imageURL: "" },
+        (err) => {
+          if (!err) {
+          } else {
+            console.log(err);
+          }
+        }
+      );
+    }
   } else {
     console.log("post envoyé avec image");
     const fileName = randomString.makeId(25);

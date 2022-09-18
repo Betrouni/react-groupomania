@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Card from '@mui/material/Card';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
@@ -22,7 +23,11 @@ import myfunctions from '../functions/myfunctions'
 export default function RecipeReviewCard(props) {
 
 
-
+  const theme = createTheme({
+    typography: {
+      fontFamily: ['Lato']
+    },
+  });
   
 
   React.useEffect(() => {
@@ -49,7 +54,9 @@ export default function RecipeReviewCard(props) {
   }, []);
 
   return (
-    <Card sx={{ maxWidth: 345 } } className='postCard'>
+
+    <ThemeProvider theme={theme}>
+      <Card sx={{ maxWidth: 345 } } className='postCard'>
     {props.authManager ? <div><CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -137,5 +144,9 @@ export default function RecipeReviewCard(props) {
       </CardActions>
    
     </Card>
+    </ThemeProvider>
+    
+
+
   );
 }
